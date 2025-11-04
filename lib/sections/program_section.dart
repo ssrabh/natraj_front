@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:front_flutter/core/program_page_color.dart';
+import 'package:front_flutter/core/app_color/program_page_color.dart';
 import 'package:front_flutter/widgets/app_button.dart';
 
 class ProgramSection extends StatelessWidget {

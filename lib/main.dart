@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:front_flutter/home/responsive_view.dart';
+import 'package:front_flutter/provider/form_pvd.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => FormProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:front_flutter/core/hero_page_color.dart';
+import 'package:front_flutter/core/app_color/hero_page_color.dart';
+import 'package:front_flutter/sections/form_page.dart';
 import 'package:front_flutter/widgets/app_button.dart';
+import 'package:front_flutter/widgets/utils.dart';
 
 class HomeSection extends StatelessWidget {
   const HomeSection({super.key});
@@ -93,9 +95,9 @@ class HomeSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppButton(
-                text: "Register Now",
+                text: "Enroll Now",
                 variant: ButtonVariant.primary,
-                onPressed: () {},
+                onPressed: () => Utils.pushPage(context, FormPage()),
               ),
               const SizedBox(width: 16),
               AppButton(

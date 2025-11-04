@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:front_flutter/core/footer_page_color.dart';
+import 'package:front_flutter/core/app_color/footer_page_color.dart';
+import 'package:front_flutter/widgets/utils.dart';
+import 'package:front_flutter/sections/form_page.dart'; // ✅ Your existing form page
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
@@ -23,7 +25,7 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(height: 40),
                     _buildContactInfo(),
                     const SizedBox(height: 40),
-                    _buildQuickLinks(),
+                    _buildQuickLinks(context),
                   ],
                 )
               : Row(
@@ -34,7 +36,7 @@ class ContactSection extends StatelessWidget {
                     const SizedBox(width: 60),
                     Expanded(child: _buildContactInfo()),
                     const SizedBox(width: 60),
-                    Expanded(child: _buildQuickLinks()),
+                    Expanded(child: _buildQuickLinks(context)),
                   ],
                 ),
 
@@ -159,14 +161,15 @@ class ContactSection extends StatelessWidget {
     );
   }
 
-  // 🔗 Quick links block
-  Widget _buildQuickLinks() {
-    final links = [
-      "About the Legacy",
-      "Register Now",
-      "Privacy Policy",
-      "Terms & Conditions",
-    ];
+  // 🔗 Quick links block (updated to handle navigation)
+  Widget _buildQuickLinks(BuildContext context) {
+    final links = {
+      "About the Legacy": const MockPage(title: "About the Legacy"),
+      "Enroll Now": const FormPage(),
+      "Privacy Policy": const MockPage(title: "Privacy Policy"),
+      "Terms & Conditions": const MockPage(title: "Terms & Conditions"),
+    };
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -179,21 +182,23 @@ class ContactSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        ...links.map((e) => _hoverLink(e)).toList(),
+        ...links.entries.map(
+          (entry) => _AnimatedLink(
+            text: entry.key,
+            onTap: () => Utils.pushPage(context, entry.value, fade: true),
+          ),
+        ),
       ],
     ).animate().fadeIn(duration: 1000.ms).slideY(begin: 0.2);
-  }
-
-  // 🔥 Link with hover effect
-  Widget _hoverLink(String text) {
-    return _AnimatedLink(text: text);
   }
 }
 
 // 🌈 Interactive hover link
 class _AnimatedLink extends StatefulWidget {
   final String text;
-  const _AnimatedLink({required this.text});
+  final VoidCallback? onTap;
+
+  const _AnimatedLink({required this.text, this.onTap});
 
   @override
   State<_AnimatedLink> createState() => _AnimatedLinkState();
@@ -204,31 +209,54 @@ class _AnimatedLinkState extends State<_AnimatedLink> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hover = true),
-      onExit: (_) => setState(() => _hover = false),
-      cursor: SystemMouseCursors.click,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        child: Row(
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: _hover ? 10 : 0,
-              height: 2,
-              color: FooterColor.accent,
-              margin: const EdgeInsets.only(right: 8),
-            ),
-            Text(
-              widget.text,
-              style: TextStyle(
-                color: _hover ? FooterColor.linkHover : FooterColor.text,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+    return InkWell(
+      onTap: widget.onTap,
+      hoverColor: Colors.transparent,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _hover = true),
+        onExit: (_) => setState(() => _hover = false),
+        cursor: SystemMouseCursors.click,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          child: Row(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: _hover ? 10 : 0,
+                height: 2,
+                color: FooterColor.accent,
+                margin: const EdgeInsets.only(right: 8),
               ),
-            ),
-          ],
+              Text(
+                widget.text,
+                style: TextStyle(
+                  color: _hover ? FooterColor.linkHover : FooterColor.text,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 🧱 Simple mock pages for other links
+class MockPage extends StatelessWidget {
+  final String title;
+  const MockPage({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Text(
+          "$title Page (Coming Soon)",
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
     );

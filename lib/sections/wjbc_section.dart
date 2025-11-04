@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:front_flutter/core/bootcamp_page_color.dart';
+import 'package:front_flutter/core/app_color/bootcamp_page_color.dart';
 
 class WhyJoinBootcampSection extends StatelessWidget {
   const WhyJoinBootcampSection({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:front_flutter/core/mentor_page_color.dart';
+import 'package:front_flutter/core/app_color/mentor_page_color.dart';
 
 class MentorSection extends StatelessWidget {
   const MentorSection({super.key});

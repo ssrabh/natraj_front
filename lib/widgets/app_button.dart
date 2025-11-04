@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_flutter/core/hero_page_color.dart';
+import 'package:front_flutter/core/app_color/hero_page_color.dart';
 
 enum ButtonVariant {
   primary,
@@ -35,14 +35,15 @@ class AppButton extends StatefulWidget {
 
 class _AppButtonState extends State<AppButton> {
   bool _isHovered = false;
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
     final bool isPrimary = widget.variant == ButtonVariant.primary;
     final bool isSecondary = widget.variant == ButtonVariant.secondary;
-    final bool isOutlined = widget.variant == ButtonVariant.outlined;
+    // final bool isOutlined = widget.variant == ButtonVariant.outlined;
 
-    // Colors and style logic
+    // 🎨 Colors and style logic
     Color backgroundColor;
     Color borderColor;
     Color textColor;
@@ -71,37 +72,47 @@ class _AppButtonState extends State<AppButton> {
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedScale(
-        duration: const Duration(milliseconds: 200),
-        scale: _isHovered ? 1.05 : 1.0,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          width: widget.width,
-          height: widget.height,
-          padding: widget.padding,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            border: Border.all(color: borderColor, width: 2),
-            boxShadow: _isHovered && isPrimary
-                ? [
-                    BoxShadow(
-                      color: HeroPageColor.primary.withOpacity(0.4),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : [],
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            widget.text,
-            style: widget.textStyle ??
-                TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
-                ),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onPressed, // ✅ now actually triggers
+        child: AnimatedScale(
+          duration: const Duration(milliseconds: 150),
+          scale: _isHovered
+              ? 1.05
+              : _isPressed
+                  ? 0.98
+                  : 1.0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            width: widget.width,
+            height: widget.height,
+            padding: widget.padding,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              border: Border.all(color: borderColor, width: 2),
+              boxShadow: _isHovered && isPrimary
+                  ? [
+                      BoxShadow(
+                        color: HeroPageColor.primary.withOpacity(0.35),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ]
+                  : [],
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              widget.text,
+              style: widget.textStyle ??
+                  TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+            ),
           ),
         ),
       ),
