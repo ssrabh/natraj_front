@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: front-flutter
+    env: docker
+    plan: free
+    buildCommand: ""
+    startCommand: ""
