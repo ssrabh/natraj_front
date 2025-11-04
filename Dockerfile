@@ -1,21 +1,25 @@
-# Use the official Flutter image
-FROM cirrusci/flutter:stable
+# Use the official Flutter image for web builds
+FROM ghcr.io/cirruslabs/flutter:stable AS build
 
 # Set working directory
 WORKDIR /app
 
-# Copy everything
+# Copy pubspec and get dependencies first (cache optimization)
+COPY pubspec.* ./
+RUN flutter pub get
+
+# Copy the rest of the app
 COPY . .
 
-# Enable Flutter Web
-RUN flutter config --enable-web
-
-# Get dependencies and build release version
-RUN flutter pub get
+# Build the Flutter web app (release mode)
 RUN flutter build web --release
 
-# Expose the web server port
-EXPOSE 8080
+# Use a lightweight web server to serve the built app
+FROM nginx:alpine
+COPY --from=build /app/build/web /usr/share/nginx/html
 
-# Serve the built web app using a simple HTTP server
-CMD ["bash", "-c", "cd build/web && python3 -m http.server 8080"]
+# Expose port 80 for Render
+EXPOSE 80
+
+# Default command
+CMD ["nginx", "-g", "daemon off;"]
