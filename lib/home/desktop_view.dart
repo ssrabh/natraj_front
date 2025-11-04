@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_flutter/core/app_color.dart';
+
 import 'package:front_flutter/core/navigation.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,7 +10,7 @@ class DesktopView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      // backgroundColor: AppColors.background,
       body: Stack(
         children: [
           // --- Scrollable content ---
@@ -50,7 +50,6 @@ class DesktopView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
                     ),
                   ).animate().fadeIn(duration: 500.ms),
 
@@ -61,7 +60,7 @@ class DesktopView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: InkWell(
                           onTap: () => NavModel.scrollTo(item.index),
-                          hoverColor: AppColors.secondary.withOpacity(0.1),
+                          // hoverColor: AppColors.secondary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(6),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -70,7 +69,7 @@ class DesktopView extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.primary,
+                                // color: AppColors.primary,
                               ),
                             ),
                           ),

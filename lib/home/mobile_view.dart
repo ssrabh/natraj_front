@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_flutter/core/app_color.dart';
+
 import 'package:front_flutter/core/navigation.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -9,25 +9,25 @@ class MobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      // backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
           'Natraj Industry',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: AppColors.primary,
+            //  color: AppColors.primary,
           ),
         ),
-        backgroundColor: AppColors.light,
+        // backgroundColor: AppColors.light,
         elevation: 4,
-        iconTheme: const IconThemeData(color: AppColors.primary),
+        // iconTheme: const IconThemeData(color: AppColors.primary),
       ),
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: AppColors.primary),
+              //  decoration: BoxDecoration(color: AppColors.primary),
               child: Text(
                 'Natraj Industry \n keeping India Moving',
                 style: TextStyle(color: Colors.white, fontSize: 22),
