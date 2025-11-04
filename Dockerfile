@@ -1,21 +1,19 @@
-# Use official Flutter image
+# ---- Build stage ----
 FROM ghcr.io/cirruslabs/flutter:stable AS build
-
 WORKDIR /app
 
-# Copy dependency files and install packages
+# Pre-fetch dependencies
 COPY pubspec.* ./
 RUN flutter pub get
 
-# Copy rest of the app
+# Copy source and build
 COPY . .
-
-# Build Flutter web app
 RUN flutter build web --release
 
-# Serve via nginx
+# ---- Serve stage ----
 FROM nginx:alpine
 COPY --from=build /app/build/web /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
